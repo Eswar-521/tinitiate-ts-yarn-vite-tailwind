@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Info, User, Briefcase, Mail, LogIn, UserPlus, Key } from "lucide-react"; // Icons
+import { Home, Info, User, Briefcase, Mail, LogIn, UserPlus, Key, ShoppingCart, Box } from "lucide-react"; // Icons
 
 const LeftSidebar = () => {
   const location = useLocation();
   const [active, setActive] = useState(location.pathname); // Track active button
 
   // Function to handle active button state
-  const handleActive = (path) => {
+  const handleActive = (path: string) => {
     setActive(path);
   };
 
@@ -33,6 +33,8 @@ const LeftSidebar = () => {
             { name: "Services", icon: Briefcase, path: "/services" },
             { name: "Profile", icon: User, path: "/profile" },
             { name: "Contact", icon: Mail, path: "/contact" },
+            { name: "Catalog", icon: Box, path: "/catalog" }, // Catalog Page Link
+            { name: "Cart", icon: ShoppingCart, path: "/cart" }, // Cart Page Link
           ].map(({ name, icon: Icon, path }) => (
             <li key={name}>
               <Link
