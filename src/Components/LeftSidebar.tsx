@@ -2,7 +2,10 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Home, Info, User, Briefcase, Mail, LogIn,
-  UserPlus, Key, ShoppingCart, Box
+  UserPlus, Key, ShoppingCart, Box, Search,
+  Table, FileText, BarChart, Headphones, Video, Film,
+  MousePointer, Edit3, Calendar, Shield, HelpCircle,
+  LayoutDashboard, PieChart
 } from "lucide-react";
 import logo from "../assets/logo.png";
 
@@ -48,72 +51,145 @@ const LeftSidebar = () => {
       </div>
 
       {/* Navigation Links */}
-      <nav className="w-full px-4">
-        <ul className="space-y-3 w-full">
-          {[
-            { name: "Home", icon: Home, path: "/" },
-            { name: "About", icon: Info, path: "/about" },
-            { name: "Services", icon: Briefcase, path: "/services" },
-            { name: "Profile", icon: User, path: "/profile" },
-            { name: "Contact", icon: Mail, path: "/contact" },
-            { name: "Catalog", icon: Box, path: "/catalog" },
-            { name: "Cart", icon: ShoppingCart, path: "/cart" },
-          ].map(({ name, icon: Icon, path }) => (
-            <li key={name}>
-              <Link
-                to={path}
-                onClick={() => handleActive(path)}
-                className={`flex items-center space-x-4 py-3 px-6 rounded-lg text-lg transition duration-300
-                  ${active === path ? "bg-blue-600 shadow-lg scale-105" : "bg-gray-800 hover:bg-gray-700"}`}
-              >
-                <Icon size={22} />
-                <span>{name}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <nav className="w-full px-4 space-y-4 text-base font-semibold">
+        {/* Home */}
+        <Link
+          to="/"
+          onClick={() => handleActive("/")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/" ? "bg-blue-600 shadow-lg scale-105" : "hover:bg-gray-700 transition"}`}
+        >
+          <Home size={20} /> <span>Home</span>
+        </Link>
 
-      {/* Login Section */}
-      <div className="w-full px-6 mt-6">
-        <h3 className="text-lg font-semibold text-gray-300 mb-3">Login</h3>
+        {/* Profile */}
+        <Link
+          to="/profile"
+          onClick={() => handleActive("/profile")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/profile" ? "bg-blue-600 shadow-lg scale-105" : "hover:bg-gray-700 transition"}`}
+        >
+          <User size={20} /> <span>Profile</span>
+        </Link>
+
+        {/* Login */}
         <Link
           to="/login"
           onClick={() => handleActive("/login")}
-          className={`flex items-center space-x-4 py-3 px-6 rounded-lg text-lg transition duration-300 shadow-md
-            ${active === "/login" ? "bg-green-600 shadow-lg scale-105" : "bg-green-700 hover:bg-green-600"}`}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/login" ? "bg-green-600 shadow-lg scale-105" : "hover:bg-green-700 transition"}`}
         >
-          <LogIn size={22} />
-          <span>Login</span>
+          <LogIn size={20} /> <span>Login</span>
         </Link>
-        <Link
-          to="/forgot-password"
-          className="text-sm text-gray-400 hover:text-gray-200 mt-2 block text-center"
-        >
-          <Key size={16} className="inline mr-1" />
-          Forgot Password?
-        </Link>
-      </div>
 
-      {/* Signup Section */}
-      <div className="w-full px-6 mt-6 mb-10">
-        <h3 className="text-lg font-semibold text-gray-300 mb-3">Signup</h3>
+        {/* Signup */}
         <Link
           to="/signup"
           onClick={() => handleActive("/signup")}
-          className={`flex items-center space-x-4 py-3 px-6 rounded-lg text-lg transition duration-300 shadow-md
-            ${active === "/signup" ? "bg-purple-600 shadow-lg scale-105" : "bg-purple-700 hover:bg-purple-600"}`}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/signup" ? "bg-purple-600 shadow-lg scale-105" : "hover:bg-purple-700 transition"}`}
         >
-          <UserPlus size={22} />
-          <span>Signup</span>
+          <UserPlus size={20} /> <span>Signup</span>
         </Link>
-        <p className="text-sm text-gray-400 mt-2 text-center">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-400 hover:text-blue-300">
-            Login here
+
+        {/* Catalog */}
+        <Link
+          to="/catalog"
+          onClick={() => handleActive("/catalog")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/catalog" ? "bg-yellow-600 shadow-lg scale-105" : "hover:bg-yellow-700 transition"}`}
+        >
+          <Box size={20} /> <span>Catalog</span>
+        </Link>
+
+        {/* Services + Subpages */}
+        <h3 className="mt-4 px-6 text-gray-400 uppercase text-xs">Services</h3>
+        {[
+          { name: "Search", icon: Search, path: "/search" },
+          { name: "Comparison", icon: BarChart, path: "/comparison" },
+          { name: "Comparison Table", icon: Table, path: "/comparisontable" },
+          { name: "Forms", icon: FileText, path: "/forms" },
+          { name: "Data Tables", icon: Table, path: "/datatable" },
+          { name: "Infographics", icon: PieChart, path: "/infographics" },
+          { name: "Audio", icon: Headphones, path: "/audio" },
+          { name: "Video", icon: Video, path: "/video" },
+          { name: "Animation", icon: Film, path: "/animation" },
+          { name: "Drag & Drop", icon: MousePointer, path: "/drag-drop" },
+          { name: "Online Editor", icon: Edit3, path: "/editor" },
+          { name: "Shopping Cart", icon: ShoppingCart, path: "/shopping-cart" },
+          { name: "Calendar", icon: Calendar, path: "/calendar" },
+        ].map(({ name, icon: Icon, path }) => (
+          <Link
+            key={name}
+            to={path}
+            onClick={() => handleActive(path)}
+            className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+              ${active === path ? "bg-indigo-600 shadow-lg scale-105" : "hover:bg-gray-700 transition"}`}
+          >
+            <Icon size={20} /> <span>{name}</span>
           </Link>
-        </p>
-      </div>
+        ))}
+
+        {/* Dashboard */}
+        <Link
+          to="/dashboard"
+          onClick={() => handleActive("/dashboard")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/dashboard" ? "bg-cyan-600 shadow-lg scale-105" : "hover:bg-cyan-700 transition"}`}
+        >
+          <LayoutDashboard size={20} /> <span>Dashboard</span>
+        </Link>
+
+        {/* Analytics */}
+        <Link
+          to="/analytics"
+          onClick={() => handleActive("/analytics")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/analytics" ? "bg-rose-600 shadow-lg scale-105" : "hover:bg-rose-700 transition"}`}
+        >
+          <PieChart size={20} /> <span>Analytics</span>
+        </Link>
+
+        {/* Security */}
+        <Link
+          to="/security"
+          onClick={() => handleActive("/security")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/security" ? "bg-slate-600 shadow-lg scale-105" : "hover:bg-slate-700 transition"}`}
+        >
+          <Shield size={20} /> <span>Security</span>
+        </Link>
+
+        {/* About */}
+        <Link
+          to="/about"
+          onClick={() => handleActive("/about")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/about" ? "bg-gray-600 shadow-lg scale-105" : "hover:bg-gray-700 transition"}`}
+        >
+          <Info size={20} /> <span>About</span>
+        </Link>
+
+        {/* Contact */}
+        <Link
+          to="/contact"
+          onClick={() => handleActive("/contact")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/contact" ? "bg-gray-600 shadow-lg scale-105" : "hover:bg-gray-700 transition"}`}
+        >
+          <Mail size={20} /> <span>Contact</span>
+        </Link>
+
+        {/* Help */}
+        <Link
+          to="/help"
+          onClick={() => handleActive("/help")}
+          className={`flex items-center space-x-4 py-3 px-6 rounded-lg
+            ${active === "/help" ? "bg-orange-600 shadow-lg scale-105" : "hover:bg-orange-700 transition"}`}
+        >
+          <HelpCircle size={20} /> <span>Help</span>
+        </Link>
+      </nav>
     </div>
   );
 };
