@@ -1,52 +1,88 @@
 import { useState } from "react";
-import { FaHandPointer, FaGripHorizontal } from "react-icons/fa";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { FaHandPointer, FaGripVertical, FaRedo } from "react-icons/fa";
+
+const initialItems = [
+  { id: "1", content: "Item A" },
+  { id: "2", content: "Item B" },
+  { id: "3", content: "Item C" },
+];
 
 const DragDrop = () => {
-  const [items, setItems] = useState(["Item A", "Item B", "Item C"]);
+  const [items, setItems] = useState(initialItems);
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-    e.dataTransfer.setData("text/plain", index.toString());
+  const onDragEnd = (result: any) => {
+    if (!result.destination) return;
+
+    const reordered = Array.from(items);
+    const [moved] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, moved);
+
+    setItems(reordered);
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, dropIndex: number) => {
-    const dragIndex = parseInt(e.dataTransfer.getData("text/plain"));
-    if (dragIndex === dropIndex) return;
-
-    const newItems = [...items];
-    const [moved] = newItems.splice(dragIndex, 1);
-    newItems.splice(dropIndex, 0, moved);
-    setItems(newItems);
-  };
+  const handleReset = () => setItems(initialItems);
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-200 p-8">
-      <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-8">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
-          <FaHandPointer className="inline-block mr-2 text-emerald-600" />
-          Drag & Drop
+    <section className="min-h-screen bg-sky-100 p-8">
+      <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl p-8 border-2 border-sky-600">
+        <h1 className="text-4xl font-bold text-center text-sky-700 mb-8 flex items-center justify-center gap-2">
+          <FaHandPointer className="text-sky-600" /> Advanced Drag & Drop
         </h1>
 
-        <div className="space-y-4">
-          {items.map((item, index) => (
-            <div
-              key={index}
-              draggable
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => handleDrop(e, index)}
-              className="p-4 bg-emerald-100 rounded shadow cursor-grab hover:bg-emerald-200 transition flex items-center space-x-3"
-            >
-              <FaGripHorizontal className="text-emerald-600" />
-              <span className="font-semibold text-gray-700">{item}</span>
-            </div>
-          ))}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700 transition"
+          >
+            <FaRedo /> Reset
+          </button>
         </div>
 
-        <div className="mt-10 text-center text-gray-600">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="list">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="space-y-4"
+              >
+                {items.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className={`p-4 bg-sky-50 rounded shadow border border-sky-400 flex items-center justify-between ${
+                          snapshot.isDragging
+                            ? "bg-sky-200"
+                            : "hover:bg-sky-100"
+                        } transition`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <FaGripVertical className="text-sky-700" />
+                          <span className="font-semibold text-sky-800">
+                            {item.content}
+                          </span>
+                        </div>
+                        <span className="text-xs text-sky-600">
+                          Position: {index + 1}
+                        </span>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+
+        <div className="mt-10 text-center text-sky-700">
           <p>
-            This is a basic drag & drop list. You can extend it with libraries like{" "}
-            <strong>react-beautiful-dnd</strong> or <strong>dnd-kit</strong> for
-            more advanced features.
+            Built with <strong>react-beautiful-dnd</strong> for powerful,
+            accessible drag and drop.
           </p>
         </div>
       </div>
